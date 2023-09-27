@@ -1,81 +1,53 @@
 # create a node class that represents the each node in a linkedlist
-
 class Node():
-    
+
     # node contains a value and next pointer 
     def __init__(self, val, next = None):
-        
         self.val = val
-        self.next = next 
-
+        self.next = next
+        
+        
 class SLL():
-    
+
     # creating the empty linkedlist that's head pointing to the None
     def __init__(self):
         self.head = None
-        self.size = 0
         
-    
     # append the node to the SLL
     def append(self, val):
-        
         new_node = Node(val)
-        
-        if(self.size == 0):
+        if self.head is None:
             self.head = new_node
+            return
         else:
-            ref = self.head
-            
-            while(ref.next != None):
-                ref = ref.next
-                
-            # we get the tail of SLL in ref
-            ref.next = new_node
-        self.size += 1
-        
-    # check if given position is valid or not
-    # if valid return node otherwise return -1
-    def isValidPos(self, pos):
-        
-        return (pos<=self.size)
-            
-    # insert the node with given value at the given position
-    def insert(self, val, pos):
-        
-        # check if the given position is valid or not
-        if(self.size == 0 and pos == 1):
-            new_node = Node(val)
+            new_node.next = self.head
             self.head = new_node
-        
-        print(self.isValidPos(pos))
-        elif(isValidPos(pos) == False):
-            print(self.isValidPos(pos))
-            print("checked")
-            return "Invalid Position"
-        
-        else: 
-            # get the node at that position
-            
-            ref = self.head
-            count = 1
-            
-            while(count != pos):
-                ref = ref.next
-                count += 1
-            
-            new_node = Node(val)
-            new_node.next = ref.next
-            ref.next = new_node
-        
-        self.size += 1
-        return f'Given value {val} is successfully inserted at positon {pos}'
     
+    # insert the node with given value at the given position
+    def insert(self, val, index):
+        new_node = Node(val)
+        current_node = self.head
+        position = 0
+        if position == index:
+            self.append(val)
+        else:
+            while(current_node != None and position+1 != index):
+                position = position+1
+                current_node = current_node.next
+             
+            if current_node != None:
+                 
+                new_node.next = current_node.next
+                current_node.next = new_node
+            else:
+                return "Index not present"
+
     # get value from a given position
     def get(self, pos):
-        
+        if(pos == 1) return self.head
         ref = self.head
         count = 1
-        while(count<self.size and count< pos):
+        while(count<pos and ref!=None):
             ref = ref.next
             count += 1
             
@@ -83,78 +55,100 @@ class SLL():
             return ref
         else:
             return "Invalid Position"
-        
+
     # set value at a given position
-    def set(self, new_val, pos):
-        # assuming that given position is already valid
-    
-        ref = self.head
-        count = 1
-        while(count < pos):
-            ref = ref.next
-            count += 1
-            
-        ref.val = new_val
-        return f"Given position Node's value is updated to {new_val} successfully"
-    
+    def set(self, val, index):
+        current_node = self.head
+        position = 0
+        if position == index:
+            current_node.val = val
+        else:
+            while(current_node != None and position != index):
+                position = position+1
+                current_node = current_node.next
+
+            if current_node != None:
+                current_node.val = val
+            else:
+                return "Index not present"
+
     # return the size of linkedlist
-    def size_sll(self):
-        return self.size
+    def sizeOfLL(self):
+        size = 0
+        if(self.head):
+            current_node = self.head
+            while(current_node):
+                size = size+1
+                current_node = current_node.next
+            return size
+        else:
+            return 0
     
-    
+            
+    def remove_at_index(self, index):
+        if self.head == None:
+            return
+ 
+        current_node = self.head
+        position = 0
+        if position == index:
+            rem_val = self.head.val
+            self.head = current_node.next
+        else:
+            while(current_node != None and position+1 != index):
+                position = position+1
+                current_node = current_node.next
+ 
+            if current_node != None:
+                rem_val = current_node.next.val
+                current_node.next = current_node.next.next
+                
+            else:
+                return "Index not present"
+        return rem_val
+            
     # get list info
     def info(self):
-        ref = self.head
-        
-        if(self.size == 0):
-            return "Single linked list is empty" 
-        
-        while(ref != None):
-            print(ref.val, end = '-->')
-            ref = ref.next
-            
+        current_node = self.head
+        while(current_node):
+            print(current_node.val, end = '-->')
+            current_node = current_node.next
         print()
-    
-    # remove and return the element from the given position
-    def remove(self, pos):
-        
-        if(isValidPos(pos) == False):
-            return "Invalid position to remove the node"
-        else:
-            if(self.size == 1):
-                rem_val = self.head.val
-                self.head = None
-            else:
-                ref = self.head
-                count = 1
-            
-                while(count<(pos - 1)):
-                    ref  = ref.next
-                    count += 1
 
-                rem_val = ref.next.val
-                ref.next = ref.next.next
-            
-            self.size -= 1
-            return rem_val
-        
-    # clear all the items
+    # clear all the items in the linked list
     def clear(self):
         self.head = None
-        self.size = 0
         return "All the elements in the SLL are cleared."
-
+       
 def test_SLL():
-    
-    # creating empty single linked list
     sll = SLL()
-    
-    print(sll.info())
-    
-    print(sll.size_sll())
-    
+    sll.info()
     sll.append(1)
     sll.info()
 
+    print()
+
+    sll.append(12)
+    sll.info()
+
+    print()
+    print(sll.insert(2, 3))
+    sll.info()
+
+    print()
+    print(sll.insert(2,1))
+    sll.info()
+
+    print()
+    print(sll.sizeOfLL())
+
+    print()
+    print(sll.remove_at_index(0))
+    sll.info()
+
+    print()
+    print(sll.clear())
+    sll.sizeOfLL()
+    sll.info()
+
 test_SLL()
-    
