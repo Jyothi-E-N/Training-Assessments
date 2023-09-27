@@ -1,10 +1,11 @@
 # Q1 Write a program to take "n" numbers from user and find the largest¶
 
-inp_string = str(input("Enter the n numbers separated by spaces: "))
-num_list = inp_string.split(" ")
+no_of_inputs = int(input("Enter the number of inputs: "))
 
-largest = int(num_list[0])
-for x in num_list:
-    if(largest<int(x)):
-        largest = int(x)
-print("Largest of all is :", x)
+lar = 0
+
+for i in range(no_of_inputs):
+    num = int(input("Enter the number: "))
+    if(lar == 0 or lar<num): lar = num
+
+print("Largest  is: ", lar)
