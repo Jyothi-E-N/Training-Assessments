@@ -6,16 +6,26 @@ class Node:
         
 class LinkedList:
     def __init__(self):
-        self._first=None
+        self._first = None
+        self._last = None
 
     def append(self, value):
+        new_node = Node(value)
         if self._first==None: # list is empty
-            self._first=Node(value)
-        else: # add to the end of a non-empty list
-            n=self._first
-            while n._next:
-                n=n._next
-            n._next=Node(value, previous=n)
+            self._first  = new_node
+            self._last = new_node
+        
+        ## add to the last node of the linkedlist
+        ## optimized append function to take O(1) time 
+        else:
+            self._last._next = new_node
+            new_node._previous = self._last
+            self._last = new_node
+        
+    def get_first_last(self):
+        first = self._first._value if self._first else None
+        last = self._last._value if self._last else None
+        print(f'first : {first}, last: {last}')
 
     def info(self):
         if self._first==None: 
@@ -42,8 +52,7 @@ class LinkedList:
             n=n._next
             if n==None:
                 break
-        else:
-            return n
+        return n
     
     def get(list,index):
         node = list.node_at_pos(index)
@@ -63,7 +72,8 @@ class LinkedList:
 
     def insert(list, index, value):
         
-        y = list.traverse_till_index(index)
+        y = list.node_at_pos(index)
+        print(y._value)
         x=y._previous
 
         new_node=Node(value,previous=x,next=y)
@@ -71,22 +81,67 @@ class LinkedList:
         if x:
             x._next=new_node
         else:
-            list._first=new_node
+            list._first = new_node
 
         y._previous=new_node
         
     def remove(list, index):
         
-        n = list.traverse_till_index(index)
-        x= n._previous
-        y= n._next
+        n = list.node_at_pos(index)
+        x = n._previous
+        y = n._next
 
         if x:
             x._next=y
         else:
-            list._first=y
-
+            list._first = y
         if y:
             y._previous=x
+        else:
+            list._last = x
         return n._value
+    
+    def is_node_in_list(self, value):
+        # traverse each node to check if it's value is given value
+        
+        n = self._first 
+        while(n is not None):
+            if(n._value == value):
+                return True
+            n = n._next
+        return False
+    
+    def count(self, value):
+        # traverse each node to check if it's value is given value
+        
+        n = self._first 
+        count = 0
+        while(n is not None):
+            if(n._value == value):
+                count += 1
+            n = n._next
+        return count
+
+def check_if_node_present():
+    l1 = LinkedList()
+    l1.append(11)
+    l1.append(22)
+    l1.append(33)
+    
+    print(l1.is_node_in_list(11))
+    print(l1.is_node_in_list(1))
+
+check_if_node_present()
+
+def get_count_value():
+    l2 = LinkedList()
+    l2.append(1)
+    l2.append(3)
+    l2.append(8)
+    l2.append(1)
+    
+    print(l2.count(1))
+    print(l2.count(3))
+
+get_count_value()
 
