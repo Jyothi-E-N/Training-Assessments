@@ -1,5 +1,3 @@
-[09:30] Busanaboina, Indhira
-
 class Book:
 
     def __init__(self, id, title, author, price, rating, next=None):
